@@ -2,467 +2,1084 @@
 <html lang="ko">
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <meta
-            name="description"
-            content="팀 일정관리 웹앱 - 부서별 일정 통합 관리 및 협업 최적화 기능 제공"
-        />
-        <meta
-            name="keywords"
-            content="팀 일정, 일정관리, 협업, 프로젝트 관리, 일정 공유"
-        />
-        <meta name="author" content="TeamScheduler" />
-        <title>팀 일정관리 | TeamScheduler</title>
-
-        <!-- Google Fonts: Noto Sans KR -->
-        <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap"
-            rel="stylesheet"
-        />
-
-        <!-- Tailwind CDN -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>전사 공용 캘린더</title>
         <script src="https://cdn.tailwindcss.com"></script>
-
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            company: "#EF4444", // 회사전체 - 빨간색
+                            aptamil: "#3B82F6", // 압타밀 - 파란색
+                            dreamy: "#1F2937", // 드리미 - 검은색
+                            btmall: "#F59E0B", // bt몰 - 노란색
+                            meeting: "#EF4444", // 미팅 - 빨간색
+                            holiday: "#10B981", // 휴무 - 초록색
+                            event: "#F59E0B", // 이벤트 - 주황색
+                            deadline: "#8B5CF6", // 마감일 - 보라색
+                            notice: "#F97316", // 공지 - 주황색
+                        },
+                        animation: {
+                            "fade-in": "fadeIn 0.5s ease-in-out",
+                            "slide-up": "slideUp 0.3s ease-out",
+                            "bounce-in": "bounceIn 0.6s ease-out",
+                            "pulse-slow": "pulse 3s infinite",
+                        },
+                        keyframes: {
+                            fadeIn: {
+                                "0%": { opacity: "0" },
+                                "100%": { opacity: "1" },
+                            },
+                            slideUp: {
+                                "0%": {
+                                    transform: "translateY(10px)",
+                                    opacity: "0",
+                                },
+                                "100%": {
+                                    transform: "translateY(0)",
+                                    opacity: "1",
+                                },
+                            },
+                            bounceIn: {
+                                "0%": { transform: "scale(0.3)", opacity: "0" },
+                                "50%": { transform: "scale(1.05)" },
+                                "70%": { transform: "scale(0.9)" },
+                                "100%": { transform: "scale(1)", opacity: "1" },
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
         <style>
-            /* 기본 폰트 변경 */
-            body {
-                font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont,
-                    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-                    "Helvetica Neue", sans-serif;
-                font-weight: 400;
-                color: #1f2937; /* Tailwind gray-800 진한 색상 */
-                background-color: #ffffff;
+            /* 고급 Sans-serif 폰트 스택 */
+            * {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "Roboto", "Helvetica Neue", "Arial", "Noto Sans", sans-serif,
+                    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+                    "Noto Color Emoji";
             }
 
-            /* 제목들 강화 */
+            /* 기본 타이포그래피 개선 */
+            body {
+                font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            /* 제목 폰트 가중치 개선 */
             h1,
             h2,
             h3 {
                 font-weight: 700;
-                color: #111827; /* Tailwind gray-900 진한 색상 */
+                letter-spacing: -0.025em;
+            }
+
+            /* 버튼 텍스트 개선 */
+            button {
+                font-weight: 600;
+                letter-spacing: 0.025em;
+            }
+
+            /* 이벤트 태그 텍스트 개선 */
+            .event-tag {
+                font-weight: 500;
+                letter-spacing: 0.01em;
+                font-size: 0.75rem;
+            }
+
+            .calendar-grid {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+            }
+
+            .calendar-day {
+                min-height: 120px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid rgba(226, 232, 240, 0.8);
+            }
+
+            .calendar-day::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.05) 0%,
+                    rgba(59, 130, 246, 0.02) 100%
+                );
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                pointer-events: none;
+            }
+
+            .calendar-day:hover::before {
+                opacity: 1;
+            }
+
+            .calendar-day:hover {
+                transform: translateY(-1px) scale(1.01);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                z-index: 10;
+            }
+
+            .event-tag {
+                font-size: 0.75rem;
+                padding: 4px 8px;
+                border-radius: 6px;
+                margin: 2px 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition: all 0.2s ease;
+                position: relative;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            }
+
+            .event-tag:hover {
+                transform: translateX(1px);
+                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+            }
+
+            .event-tag.bg-company {
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            }
+
+            .event-tag.bg-aptamil {
+                background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            }
+
+            .event-tag.bg-dreamy {
+                background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            }
+
+            .event-tag.bg-btmall {
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            }
+
+            .tooltip {
+                position: fixed;
+                background: #1f2937;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                z-index: 1000;
+                pointer-events: none;
+                opacity: 0;
+                max-width: 250px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                border: 1px solid #374151;
+            }
+
+            .tooltip.show {
+                opacity: 1;
+            }
+
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(226, 232, 240, 0.8);
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+                    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            }
+
+            .gradient-bg {
+                background: linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    #f8fafc 50%,
+                    #f1f5f9 100%
+                );
+            }
+
+            .floating-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .floating-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+
+            .btn-modern {
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+                    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            }
+
+            .btn-modern::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
+                );
+                transition: left 0.5s;
+            }
+
+            .btn-modern:hover::before {
+                left: 100%;
+            }
+
+            .btn-modern:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3),
+                    0 2px 4px -1px rgba(59, 130, 246, 0.2);
+            }
+
+            @media (max-width: 768px) {
+                .calendar-day {
+                    min-height: 80px;
+                    padding: 8px !important;
+                }
+
+                .event-tag {
+                    font-size: 0.625rem;
+                    padding: 2px 4px;
+                    margin: 1px 0;
+                }
+
+                .container {
+                    padding-left: 8px !important;
+                    padding-right: 8px !important;
+                }
+
+                h1 {
+                    font-size: 1.875rem !important;
+                    line-height: 2.25rem !important;
+                }
+
+                h2 {
+                    font-size: 1.5rem !important;
+                }
+
+                h3 {
+                    font-size: 1.25rem !important;
+                }
+
+                .p-8 {
+                    padding: 1rem !important;
+                }
+
+                .space-x-6 > * + * {
+                    margin-left: 1rem !important;
+                }
+
+                .space-x-4 > * + * {
+                    margin-left: 0.75rem !important;
+                }
+
+                .space-x-3 > * + * {
+                    margin-left: 0.5rem !important;
+                }
+
+                .grid-cols-4 {
+                    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                }
+
+                .text-lg {
+                    font-size: 0.875rem !important;
+                }
+
+                .text-xl {
+                    font-size: 1rem !important;
+                }
+
+                .text-3xl {
+                    font-size: 1.5rem !important;
+                }
+
+                .text-2xl {
+                    font-size: 1.25rem !important;
+                }
+
+                .p-4 {
+                    padding: 0.75rem !important;
+                }
+
+                .p-3 {
+                    padding: 0.5rem !important;
+                }
+
+                .w-6 {
+                    width: 1.25rem !important;
+                }
+
+                .h-6 {
+                    height: 1.25rem !important;
+                }
+
+                .w-8 {
+                    width: 1.5rem !important;
+                }
+
+                .h-8 {
+                    height: 1.5rem !important;
+                }
+
+                .w-5 {
+                    width: 1rem !important;
+                }
+
+                .h-5 {
+                    height: 1rem !important;
+                }
+
+                .w-3 {
+                    width: 0.5rem !important;
+                }
+
+                .h-3 {
+                    height: 0.5rem !important;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .calendar-day {
+                    min-height: 70px;
+                    padding: 6px !important;
+                }
+
+                .event-tag {
+                    font-size: 0.5rem;
+                    padding: 1px 3px;
+                }
+
+                .flex.justify-between {
+                    flex-direction: column;
+                    gap: 1rem;
+                    align-items: center;
+                }
+
+                .flex.items-center.space-x-6 {
+                    gap: 0.5rem !important;
+                }
+
+                h1 {
+                    font-size: 1.5rem !important;
+                }
+
+                .text-3xl {
+                    font-size: 1.25rem !important;
+                }
+
+                .p-8 {
+                    padding: 0.75rem !important;
+                }
+
+                .space-y-4 > * + * {
+                    margin-top: 0.75rem !important;
+                }
+
+                .space-y-3 > * + * {
+                    margin-top: 0.5rem !important;
+                }
+            }
+
+            /* 스크롤바 커스터마이징 */
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #f1f5f9;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            }
+
+            /* 캘린더 날짜 숫자 개선 */
+            .calendar-day > div:first-child {
+                font-weight: 600;
                 letter-spacing: -0.02em;
+                font-variant-numeric: tabular-nums;
             }
 
-            /* 부드러운 페이드인 애니메이션 */
-            .fade-in {
-                animation: fadeIn 0.8s ease forwards;
-                opacity: 0;
-            }
-            @keyframes fadeIn {
-                to {
-                    opacity: 1;
-                }
-            }
-
-            /* 슬라이드 인 (왼쪽에서) */
-            .slide-in-left {
-                animation: slideInLeft 0.8s ease forwards;
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            @keyframes slideInLeft {
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-
-            /* 상태별 컬러 변수 */
-            :root {
-                --status-progress: #2563eb; /* blue-600 */
-                --status-upcoming: #16a34a; /* green-600 */
-                --status-delayed: #dc2626; /* red-600 */
-            }
-
-            /* 상태별 텍스트 색상 클래스 */
-            .status-progress {
-                color: var(--status-progress);
+            /* 요일 헤더 개선 */
+            .calendar-grid > div:not(.calendar-day) {
                 font-weight: 600;
-            }
-            .status-upcoming {
-                color: var(--status-upcoming);
-                font-weight: 600;
-            }
-            .status-delayed {
-                color: var(--status-delayed);
-                font-weight: 600;
+                letter-spacing: 0.02em;
+                font-variant-numeric: tabular-nums;
             }
 
-            /* 모바일용 테이블 변환 (기존 유지) */
-            @media (max-width: 640px) {
-                table,
-                thead,
-                tbody,
-                th,
-                td,
-                tr {
-                    display: block;
-                }
-                thead tr {
-                    position: absolute;
-                    top: -9999px;
-                    left: -9999px;
-                }
-                tr {
-                    margin-bottom: 1rem;
-                    border: 1px solid #e5e7eb; /* Tailwind gray-200 */
-                    border-radius: 0.375rem; /* rounded-lg */
-                    padding: 0.75rem;
-                }
-                td {
-                    border: none;
-                    padding-left: 50%;
-                    position: relative;
-                    text-align: right;
-                    font-size: 0.875rem;
-                    line-height: 1.25rem;
-                }
-                td::before {
-                    position: absolute;
-                    top: 0.75rem;
-                    left: 0.75rem;
-                    width: 45%;
-                    white-space: nowrap;
-                    font-weight: 600;
-                    text-align: left;
-                    content: attr(data-label);
-                    color: #374151; /* Tailwind gray-700 */
-                }
-                td:last-child {
-                    padding-bottom: 0.75rem;
-                }
+            /* 툴팁 텍스트 개선 */
+            .tooltip {
+                font-weight: 500;
+                letter-spacing: 0.01em;
+                line-height: 2;
+            }
+
+            /* 공지사항 텍스트 개선 */
+            .glass-effect p {
+                line-height: 1.5;
+                letter-spacing: 0.01em;
+            }
+
+            /* 범례 텍스트 개선 */
+            .legend-item span {
+                font-weight: 500;
+                letter-spacing: 0.02em;
+            }
+
+            /* 현재 월 표시 개선 */
+            #currentMonth {
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                font-variant-numeric: tabular-nums;
             }
         </style>
     </head>
-    <body class="bg-white text-gray-800 font-sans min-h-screen flex flex-col">
-        <!-- 상단 내비게이션 -->
-        <header
-            class="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-10"
-        >
+    <body class="min-h-screen gradient-bg">
+        <div class="container mx-auto px-4 py-8 max-w-7xl">
+            <!-- 상단 공지사항 영역 -->
             <div
-                class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3"
+                class="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-8 mb-6 sm:mb-8 floating-card animate-slide-up"
             >
-                <h1 class="text-xl font-semibold text-gray-900">
-                    TeamScheduler
-                </h1>
+                <h2
+                    class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center"
+                >
+                    <div
+                        class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-2 sm:mr-3 shadow-sm"
+                    >
+                        <svg
+                            class="w-4 h-4 sm:w-5 sm:h-5 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                clip-rule="evenodd"
+                            ></path>
+                        </svg>
+                    </div>
+                    중요 일정내용
+                </h2>
+                <div class="space-y-3 sm:space-y-4">
+                    <div
+                        class="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                    >
+                        <div
+                            class="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 animate-pulse-slow"
+                        ></div>
+                        <div>
+                            <p
+                                class="font-semibold text-gray-800 text-sm sm:text-base"
+                            >
+                                연말연시 배송 일정 안내
+                            </p>
+                            <p class="text-gray-600 text-xs sm:text-sm">
+                                12월 24일~1월 2일까지 배송 서비스 일시 중단
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                    >
+                        <div
+                            class="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 animate-pulse-slow"
+                        ></div>
+                        <div>
+                            <p
+                                class="font-semibold text-gray-800 text-sm sm:text-base"
+                            >
+                                전사 미팅 일정 변경
+                            </p>
+                            <p class="text-gray-600 text-xs sm:text-sm">
+                                매주 금요일 오후 2시 → 매주 목요일 오후 3시로
+                                변경
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </header>
 
-        <!-- 메인 컨텐츠 -->
-        <main class="flex-grow max-w-7xl mx-auto p-6 space-y-10">
-            <!-- 기능 설명 섹션 -->
-            <section
-                class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center fade-in"
+            <!-- 캘린더 컨트롤 -->
+            <div
+                class="flex flex-col sm:flex-row justify-between items-center mb-8 animate-slide-up gap-4"
             >
-                <div class="flex flex-col items-center space-y-3">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-12 w-12 text-blue-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                <div class="flex items-center space-x-4 sm:space-x-6">
+                    <button
+                        id="prevMonth"
+                        class="p-2 sm:p-3 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 transition-all duration-300 group shadow-sm"
                     >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M8 7V3m8 4V3m-8 8v8m8-8v8M3 21h18"
-                        />
-                    </svg>
-                    <h3 class="text-lg font-semibold">일정 통합 관리</h3>
-                    <p class="text-gray-600">
-                        모든 부서 일정을 한눈에 보고 조율할 수 있습니다.
-                    </p>
-                </div>
-                <div class="flex flex-col items-center space-y-3 slide-in-left">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-12 w-12 text-blue-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                        <svg
+                            class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:scale-110 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            ></path>
+                        </svg>
+                    </button>
+                    <h2
+                        id="currentMonth"
+                        class="text-2xl sm:text-3xl font-bold text-gray-800"
                     >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 4v16m8-8H4"
-                        />
-                    </svg>
-                    <h3 class="text-lg font-semibold">협업 최적화</h3>
-                    <p class="text-gray-600">
-                        부서간 일정 공유와 알림 기능으로 협업을 돕습니다.
-                    </p>
-                </div>
-                <div
-                    class="flex flex-col items-center space-y-3 fade-in"
-                    style="animation-delay: 0.3s"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-12 w-12 text-blue-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 13l4 4L19 7"
-                        />
-                    </svg>
-                    <h3 class="text-lg font-semibold">모바일 최적화</h3>
-                    <p class="text-gray-600">
-                        언제 어디서든 편리하게 일정 확인 및 관리가 가능합니다.
-                    </p>
-                </div>
-            </section>
-            <!-- 강조 스케쥴 섹션 -->
-            <section class="fade-in">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-semibold text-gray-900">
-                        주요 일정
+                        2024년 1월
                     </h2>
+                    <button
+                        id="nextMonth"
+                        class="p-2 sm:p-3 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 transition-all duration-300 group shadow-sm"
+                    >
+                        <svg
+                            class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:scale-110 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5l7 7-7 7"
+                            ></path>
+                        </svg>
+                    </button>
                 </div>
-                <div
-                    class="overflow-x-auto rounded-lg border border-yellow-200 bg-gray-50"
-                >
-                    <table class="w-full text-left text-sm text-gray-700">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="p-3 border-b border-yellow-200">
-                                    일정명
-                                </th>
-                                <th class="p-3 border-b border-yellow-200">
-                                    시작일
-                                </th>
-                                <th class="p-3 border-b border-yellow-200">
-                                    종료일
-                                </th>
-                                <th class="p-3 border-b border-yellow-200">
-                                    비고
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-yellow-50 transition">
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="일정명"
-                                >
-                                    대표님 해외 출장
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="시작일"
-                                >
-                                    2025-06-03
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="종료일"
-                                >
-                                    2025-06-10
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="비고"
-                                >
-                                    출장
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-yellow-50 transition">
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="일정명"
-                                >
-                                    전사 워크숍
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="시작일"
-                                >
-                                    2025-06-20
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="종료일"
-                                >
-                                    2025-06-20
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="비고"
-                                >
-                                    오전
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-yellow-50 transition">
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="일정명"
-                                >
-                                    보안 교육
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="시작일"
-                                >
-                                    2025-06-12
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="종료일"
-                                >
-                                    2025-06-12
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="비고"
-                                >
-                                    전 직원 대상
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="flex items-center space-x-3">
+                    <button
+                        id="todayBtn"
+                        class="px-4 sm:px-6 py-2 sm:py-3 btn-modern text-white rounded-xl font-semibold text-sm sm:text-base"
+                    >
+                        오늘
+                    </button>
                 </div>
-            </section>
-            <!-- 일정 테이블 예시 -->
-            <section class="fade-in">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-semibold text-gray-900">
-                        부서별 일정 현황
-                    </h2>
-                </div>
-                <div class="overflow-x-auto rounded-lg border border-gray-200">
-                    <table class="w-full text-left text-sm text-gray-700">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="p-3 border-b border-gray-200">
-                                    부서
-                                </th>
-                                <th class="p-3 border-b border-gray-200">
-                                    일정명
-                                </th>
-                                <th class="p-3 border-b border-gray-200">
-                                    시작일
-                                </th>
-                                <th class="p-3 border-b border-gray-200">
-                                    종료일
-                                </th>
-                                <th class="p-3 border-b border-gray-200">
-                                    상태
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-gray-50 transition">
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="부서"
-                                >
-                                    개발팀
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="일정명"
-                                >
-                                    API 개선 프로젝트
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="시작일"
-                                >
-                                    2025-06-10
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="종료일"
-                                >
-                                    2025-07-01
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200 status-progress"
-                                    data-label="상태"
-                                >
-                                    진행 중
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 transition">
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="부서"
-                                >
-                                    마케팅팀
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="일정명"
-                                >
-                                    신제품 런칭 캠페인
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="시작일"
-                                >
-                                    2025-06-15
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="종료일"
-                                >
-                                    2025-07-15
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200 status-upcoming"
-                                    data-label="상태"
-                                >
-                                    예정
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-gray-50 transition">
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="부서"
-                                >
-                                    디자인팀
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="일정명"
-                                >
-                                    UI/UX 리뉴얼
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="시작일"
-                                >
-                                    2025-06-05
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200"
-                                    data-label="종료일"
-                                >
-                                    2025-06-30
-                                </td>
-                                <td
-                                    class="p-3 border-b border-gray-200 status-delayed"
-                                    data-label="상태"
-                                >
-                                    지연
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
+            </div>
 
-        <!-- 푸터 -->
+            <!-- 요일 헤더 -->
+            <div class="calendar-grid mb-4 animate-slide-up">
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-red-500 text-sm sm:text-lg"
+                >
+                    일
+                </div>
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-gray-700 text-sm sm:text-lg"
+                >
+                    월
+                </div>
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-gray-700 text-sm sm:text-lg"
+                >
+                    화
+                </div>
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-gray-700 text-sm sm:text-lg"
+                >
+                    수
+                </div>
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-gray-700 text-sm sm:text-lg"
+                >
+                    목
+                </div>
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-gray-700 text-sm sm:text-lg"
+                >
+                    금
+                </div>
+                <div
+                    class="p-2 sm:p-4 text-center font-bold text-blue-500 text-sm sm:text-lg"
+                >
+                    토
+                </div>
+            </div>
+
+            <!-- 캘린더 그리드 -->
+            <div
+                id="calendarGrid"
+                class="calendar-grid glass-effect rounded-2xl overflow-hidden floating-card animate-bounce-in"
+            >
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+
+            <!-- 범례 -->
+            <div
+                class="mt-6 sm:mt-8 glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-8 floating-card animate-slide-up"
+            >
+                <h3
+                    class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center"
+                >
+                    <svg
+                        class="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-gray-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                        ></path>
+                    </svg>
+                    회사별 일정 범례
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
+                    <div
+                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                    >
+                        <div
+                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-red-400 to-red-600 rounded-lg shadow-sm"
+                        ></div>
+                        <span
+                            class="text-gray-800 font-medium text-sm sm:text-base"
+                            >회사전체</span
+                        >
+                    </div>
+                    <div
+                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                    >
+                        <div
+                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg shadow-sm"
+                        ></div>
+                        <span
+                            class="text-gray-800 font-medium text-sm sm:text-base"
+                            >압타밀</span
+                        >
+                    </div>
+                    <div
+                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                    >
+                        <div
+                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-orange-400 to-orange-600 rounded-lg shadow-sm"
+                        ></div>
+                        <span
+                            class="text-gray-800 font-medium text-sm sm:text-base"
+                            >드리미</span
+                        >
+                    </div>
+                    <div
+                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                    >
+                        <div
+                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-sm"
+                        ></div>
+                        <span
+                            class="text-gray-800 font-medium text-sm sm:text-base"
+                            >BT몰</span
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            class CompanyCalendar {
+                constructor() {
+                    this.currentDate = new Date();
+                    this.events = this.getMockEvents();
+                    this.currentTooltip = null;
+                    this.init();
+                }
+
+                init() {
+                    try {
+                        this.renderCalendar();
+                        this.bindEvents();
+                    } catch (error) {
+                        console.error("캘린더 초기화 오류:", error);
+                    }
+                }
+                // 추가,수정
+
+                getMockEvents() {
+                    return {
+                        "2000-00-00": [
+                            {
+                                type: "company",
+                                title: "일정",
+                                description: "상세내용",
+                            },
+                        ],
+                        "2025-07-04": [
+                            {
+                                type: "company",
+                                title: "Connect Day",
+                                description: "eibe 전직원 문화체험,회식 일정",
+                            },
+                        ],
+                        "2025-06-15": [
+                            {
+                                type: "company",
+                                title: "반기 전사 회의",
+                                description: "상반기 실적 검토 및 하반기 계획",
+                            },
+                        ],
+                        "2025-06-28": [
+                            {
+                                type: "aptamil",
+                                title: "ex압타밀 제주도 매장 점검",
+                                description:
+                                    "제주도 신규 매장 오픈 준비 및 점검",
+                            },
+                            {
+                                type: "dreame",
+                                title: "ex드리미 업데이트",
+                                description: "3.4.1업데이트가예정되어있습니다",
+                            },
+                        ],
+                    };
+                }
+
+                renderCalendar() {
+                    try {
+                        const year = this.currentDate.getFullYear();
+                        const month = this.currentDate.getMonth();
+
+                        const currentMonthElement =
+                            document.getElementById("currentMonth");
+                        if (currentMonthElement) {
+                            currentMonthElement.textContent = `${year}년 ${
+                                month + 1
+                            }월`;
+                        }
+
+                        // 해당 월의 첫 번째 날
+                        const firstDay = new Date(year, month, 1);
+
+                        // 캘린더 시작일 (이전 달의 날짜들)
+                        const startDate = new Date(firstDay);
+                        const dayOfWeek = firstDay.getDay(); // 0=일요일, 1=월요일, ...
+                        startDate.setDate(1 - dayOfWeek);
+
+                        const calendarGrid =
+                            document.getElementById("calendarGrid");
+                        if (!calendarGrid) {
+                            console.error(
+                                "캘린더 그리드 요소를 찾을 수 없습니다."
+                            );
+                            return;
+                        }
+
+                        calendarGrid.innerHTML = "";
+
+                        for (let i = 0; i < 42; i++) {
+                            const currentDate = new Date(startDate);
+                            currentDate.setDate(startDate.getDate() + i);
+
+                            const dayElement = this.createDayElement(
+                                currentDate,
+                                year,
+                                month
+                            );
+                            calendarGrid.appendChild(dayElement);
+                        }
+                    } catch (error) {
+                        console.error("캘린더 렌더링 오류:", error);
+                    }
+                }
+
+                createDayElement(date, currentYear, currentMonth) {
+                    try {
+                        const dayDiv = document.createElement("div");
+                        dayDiv.className =
+                            "calendar-day bg-white border border-gray-200 p-3 relative";
+
+                        const isCurrentMonth = date.getMonth() === currentMonth;
+                        const isToday = this.isToday(date);
+                        const dateString = this.formatDate(date);
+                        const dayEvents = this.events[dateString] || [];
+
+                        let dayClass = "text-lg font-bold mb-3 ";
+                        if (!isCurrentMonth) {
+                            dayClass += "text-gray-400";
+                        } else if (date.getDay() === 0) {
+                            dayClass += "text-red-500";
+                        } else if (date.getDay() === 6) {
+                            dayClass += "text-blue-500";
+                        } else {
+                            dayClass += "text-gray-800";
+                        }
+
+                        if (isToday) {
+                            dayDiv.classList.add(
+                                "bg-blue-50",
+                                "border-blue-300"
+                            );
+                            dayDiv.style.boxShadow =
+                                "0 0 0 3px rgba(59, 130, 246, 0.1)";
+                        }
+
+                        // 안전한 HTML 생성
+                        const eventsHTML = dayEvents
+                            .map((event, index) => {
+                                const safeTitle = this.escapeHtml(event.title);
+                                const safeType = this.escapeHtml(event.type);
+                                const eventColor = this.getEventColor(
+                                    event.type
+                                );
+
+                                return `<span
+                                    class="event-tag"
+                                    style="background-color: ${eventColor}"
+                                    data-event-title="${safeTitle}"
+                                    data-event-description="${this.escapeHtml(
+                                        event.description
+                                    )}"
+                                    data-event-type="${safeType}"
+                                >${safeTitle}</span>`;
+                            })
+                            .join("");
+
+                        dayDiv.innerHTML = `
+                            <div class="${dayClass}">${date.getDate()}</div>
+                            <div class="space-y-2">${eventsHTML}</div>
+                        `;
+
+                        // 이벤트 리스너 추가
+                        dayDiv.querySelectorAll(".event-tag").forEach((tag) => {
+                            tag.addEventListener("mouseenter", (e) => {
+                                const eventData = {
+                                    title: e.target.dataset.eventTitle,
+                                    description:
+                                        e.target.dataset.eventDescription,
+                                    type: e.target.dataset.eventType,
+                                };
+                                this.showTooltip(e, eventData);
+                            });
+
+                            tag.addEventListener("mouseleave", () => {
+                                this.hideTooltip();
+                            });
+                        });
+
+                        return dayDiv;
+                    } catch (error) {
+                        console.error("날짜 요소 생성 오류:", error);
+                        const fallbackDiv = document.createElement("div");
+                        fallbackDiv.className =
+                            "calendar-day bg-white border border-gray-200 p-3 relative";
+                        fallbackDiv.innerHTML = `<div class="text-lg font-bold mb-3 text-gray-800">${date.getDate()}</div>`;
+                        return fallbackDiv;
+                    }
+                }
+
+                showTooltip(event, eventData) {
+                    try {
+                        // 기존 툴팁 제거
+                        this.hideTooltip();
+
+                        if (!eventData || !eventData.title) {
+                            return;
+                        }
+
+                        const tooltip = document.createElement("div");
+                        tooltip.className = "tooltip";
+                        tooltip.innerHTML = `
+                            <div style="font-weight: 600; margin-bottom: 4px;">${this.escapeHtml(
+                                eventData.title
+                            )}</div>
+                            <div style="color: #d1d5db; font-size: 0.8rem;">${this.escapeHtml(
+                                eventData.description || ""
+                            )}</div>
+                        `;
+
+                        document.body.appendChild(tooltip);
+
+                        const rect = event.target.getBoundingClientRect();
+
+                        // 간단한 위치 계산
+                        let left = rect.left;
+                        let top = rect.bottom + 5;
+
+                        // 화면 경계 확인
+                        if (left + 250 > window.innerWidth) {
+                            left = window.innerWidth - 260;
+                        }
+                        if (top + 80 > window.innerHeight) {
+                            top = rect.top - 85;
+                        }
+
+                        tooltip.style.left = left + "px";
+                        tooltip.style.top = top + "px";
+
+                        // 즉시 표시
+                        tooltip.classList.add("show");
+                        this.currentTooltip = tooltip;
+                    } catch (error) {
+                        console.error("툴팁 표시 오류:", error);
+                    }
+                }
+
+                hideTooltip() {
+                    try {
+                        if (
+                            this.currentTooltip &&
+                            this.currentTooltip.parentNode
+                        ) {
+                            this.currentTooltip.remove();
+                        }
+                        this.currentTooltip = null;
+                    } catch (error) {
+                        console.error("툴팁 숨김 오류:", error);
+                        this.currentTooltip = null;
+                    }
+                }
+
+                isToday(date) {
+                    try {
+                        const today = new Date();
+                        return date.toDateString() === today.toDateString();
+                    } catch (error) {
+                        console.error("오늘 날짜 확인 오류:", error);
+                        return false;
+                    }
+                }
+
+                formatDate(date) {
+                    try {
+                        return date.toISOString().split("T")[0];
+                    } catch (error) {
+                        console.error("날짜 포맷 오류:", error);
+                        return "";
+                    }
+                }
+
+                bindEvents() {
+                    try {
+                        const prevBtn = document.getElementById("prevMonth");
+                        const nextBtn = document.getElementById("nextMonth");
+                        const todayBtn = document.getElementById("todayBtn");
+
+                        if (prevBtn) {
+                            prevBtn.addEventListener("click", () => {
+                                const currentYear =
+                                    this.currentDate.getFullYear();
+                                const currentMonth =
+                                    this.currentDate.getMonth();
+
+                                if (currentMonth === 0) {
+                                    // 1월에서 이전 월로 가면 작년 12월
+                                    this.currentDate = new Date(
+                                        currentYear - 1,
+                                        11,
+                                        1
+                                    );
+                                } else {
+                                    // 그 외에는 이전 월의 1일로 설정
+                                    this.currentDate = new Date(
+                                        currentYear,
+                                        currentMonth - 1,
+                                        1
+                                    );
+                                }
+                                this.renderCalendar();
+                            });
+                        }
+
+                        if (nextBtn) {
+                            nextBtn.addEventListener("click", () => {
+                                const currentYear =
+                                    this.currentDate.getFullYear();
+                                const currentMonth =
+                                    this.currentDate.getMonth();
+
+                                if (currentMonth === 11) {
+                                    // 12월에서 다음 월로 가면 내년 1월
+                                    this.currentDate = new Date(
+                                        currentYear + 1,
+                                        0,
+                                        1
+                                    );
+                                } else {
+                                    // 그 외에는 다음 월의 1일로 설정
+                                    this.currentDate = new Date(
+                                        currentYear,
+                                        currentMonth + 1,
+                                        1
+                                    );
+                                }
+                                this.renderCalendar();
+                            });
+                        }
+
+                        if (todayBtn) {
+                            todayBtn.addEventListener("click", () => {
+                                this.currentDate = new Date();
+                                this.renderCalendar();
+                            });
+                        }
+                    } catch (error) {
+                        console.error("이벤트 바인딩 오류:", error);
+                    }
+                }
+                // 범례색상
+                getEventColor(type) {
+                    const colors = {
+                        company: "#ef4444", // red
+                        aptamil: "#3b82f6", // blue
+                        dreame: "#f97316", // orange
+                        btmall: "#eab308", // yellow
+                    };
+                    return colors[type] || "#6b7280";
+                }
+
+                escapeHtml(str) {
+                    return str
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#39;");
+                }
+            }
+
+            // 캘린더 초기화
+            document.addEventListener("DOMContentLoaded", () => {
+                try {
+                    const calendar = new CompanyCalendar();
+                    window.calendar = calendar;
+                } catch (error) {
+                    console.error("캘린더 초기화 실패:", error);
+                    // 사용자에게 오류 메시지 표시
+                    const container = document.querySelector(".container");
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="text-center py-8">
+                                <h2 class="text-xl font-bold text-red-600 mb-4">캘린더 로드 오류</h2>
+                                <p class="text-gray-600">페이지를 새로고침해주세요.</p>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
