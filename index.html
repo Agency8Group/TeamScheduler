@@ -432,7 +432,7 @@
                 font-variant-numeric: tabular-nums;
             }
 
-            /* 툴팁 텍스트 개선 */
+            /* 툴크 텍스트 개선 */
             .tooltip {
                 font-weight: 500;
                 letter-spacing: 0.01em;
@@ -457,6 +457,20 @@
                 letter-spacing: -0.03em;
                 font-variant-numeric: tabular-nums;
             }
+
+            /* 텍스트 줄임표 처리 */
+            .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .truncate {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         </style>
     </head>
     <body class="min-h-screen gradient-bg">
@@ -465,61 +479,109 @@
             <div
                 class="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-8 mb-6 sm:mb-8 floating-card animate-slide-up"
             >
-                <h2
-                    class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center"
-                >
-                    <div
-                        class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-2 sm:mr-3 shadow-sm"
+                <div class="flex justify-between items-center mb-4 sm:mb-6">
+                    <h2
+                        class="text-xl sm:text-2xl font-bold text-gray-800 flex items-center"
+                    >
+                        <div
+                            class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-2 sm:mr-3 shadow-sm"
+                        >
+                            <svg
+                                class="w-4 h-4 sm:w-5 sm:h-5 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                        </div>
+                        중요 일정 & 오늘 일정
+                    </h2>
+                    <button
+                        id="requestEventBtn"
+                        class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold text-sm hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-sm flex items-center space-x-2"
                     >
                         <svg
-                            class="w-4 h-4 sm:w-5 sm:h-5 text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
                         >
                             <path
-                                fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             ></path>
                         </svg>
-                    </div>
-                    중요 일정내용
-                </h2>
-                <div class="space-y-3 sm:space-y-4">
-                    <div
-                        class="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                        <span>일정 등록 요청</span>
+                    </button>
+                </div>
+
+                <!-- 중요 일정 섹션 -->
+                <div class="mb-6">
+                    <h3
+                        class="text-lg font-semibold text-gray-700 mb-3 flex items-center"
                     >
+                        <svg
+                            class="w-5 h-5 mr-2 text-orange-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                            ></path>
+                        </svg>
+                        중요 공지
+                    </h3>
+                    <div class="space-y-3">
                         <div
-                            class="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 animate-pulse-slow"
-                        ></div>
-                        <div>
-                            <p
-                                class="font-semibold text-gray-800 text-sm sm:text-base"
-                            >
-                                연말연시 배송 일정 안내
-                            </p>
-                            <p class="text-gray-600 text-xs sm:text-sm">
-                                12월 24일~1월 2일까지 배송 서비스 일시 중단
-                            </p>
+                            class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg border border-orange-200 shadow-sm"
+                        >
+                            <div
+                                class="w-2 h-2 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mt-1.5 flex-shrink-0 animate-pulse-slow"
+                            ></div>
+                            <div>
+                                <p class="font-semibold text-gray-800 text-sm">
+                                    연말연시 배송 일정 안내
+                                </p>
+                                <p class="text-gray-600 text-xs">
+                                    12월 24일~1월 2일까지 배송 서비스 일시 중단
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div
-                        class="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
+                </div>
+
+                <!-- 오늘 일정 섹션 -->
+                <div>
+                    <h3
+                        class="text-lg font-semibold text-gray-700 mb-3 flex items-center"
                     >
-                        <div
-                            class="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 animate-pulse-slow"
-                        ></div>
-                        <div>
-                            <p
-                                class="font-semibold text-gray-800 text-sm sm:text-base"
-                            >
-                                전사 미팅 일정 변경
-                            </p>
-                            <p class="text-gray-600 text-xs sm:text-sm">
-                                매주 금요일 오후 2시 → 매주 목요일 오후 3시로
-                                변경
-                            </p>
-                        </div>
+                        <svg
+                            class="w-5 h-5 mr-2 text-green-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            ></path>
+                        </svg>
+                        오늘 일정
+                    </h3>
+                    <div id="todayEventsList" class="space-y-3">
+                        <!-- JavaScript로 동적 생성 -->
                     </div>
                 </div>
             </div>
@@ -628,16 +690,194 @@
             >
                 <!-- JavaScript로 동적 생성 -->
             </div>
+        </div>
 
-            <!-- 범례 -->
+        <!-- 일정 등록 요청 모달 -->
+        <div
+            id="eventRequestModal"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+        >
             <div
-                class="mt-6 sm:mt-8 glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-8 floating-card animate-slide-up"
+                class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
             >
-                <h3
-                    class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center"
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">
+                            일정 등록 요청
+                        </h3>
+                        <button
+                            id="closeModalBtn"
+                            class="text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <form id="eventRequestForm" class="space-y-4">
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                                >요청자 *</label
+                            >
+                            <input
+                                type="text"
+                                id="requester"
+                                name="requester"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                                >날짜 *</label
+                            >
+                            <input
+                                type="date"
+                                id="eventDate"
+                                name="eventDate"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                                >회사 *</label
+                            >
+                            <select
+                                id="company"
+                                name="company"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                                <option value="">회사 선택</option>
+                                <option
+                                    value="company"
+                                    style="
+                                        background-color: #ef4444;
+                                        color: white;
+                                    "
+                                >
+                                    🔴 회사전체
+                                </option>
+                                <option
+                                    value="aptamil"
+                                    style="
+                                        background-color: #3b82f6;
+                                        color: white;
+                                    "
+                                >
+                                    🔵 압타밀
+                                </option>
+                                <option
+                                    value="dreame"
+                                    style="
+                                        background-color: #f97316;
+                                        color: white;
+                                    "
+                                >
+                                    🟠 드리미
+                                </option>
+                                <option
+                                    value="btmall"
+                                    style="
+                                        background-color: #eab308;
+                                        color: white;
+                                    "
+                                >
+                                    🟡 BT몰
+                                </option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                                >제목 *</label
+                            >
+                            <input
+                                type="text"
+                                id="eventTitle"
+                                name="eventTitle"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                                >설명</label
+                            >
+                            <textarea
+                                id="eventDescription"
+                                name="eventDescription"
+                                rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            ></textarea>
+                        </div>
+
+                        <div class="flex space-x-3 pt-4">
+                            <button
+                                type="button"
+                                id="cancelBtn"
+                                class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                취소
+                            </button>
+                            <button
+                                type="submit"
+                                class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                                요청하기
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 로딩 오버레이 -->
+        <div
+            id="loadingOverlay"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center"
+        >
+            <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+                <div
+                    class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"
+                ></div>
+                <span class="text-gray-700">처리 중...</span>
+            </div>
+        </div>
+
+        <!-- 완료 메시지 모달 -->
+        <div
+            id="successModal"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+        >
+            <div
+                class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 text-center"
+            >
+                <div
+                    class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
                 >
                     <svg
-                        class="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-gray-600"
+                        class="w-8 h-8 text-green-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -646,57 +886,20 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                            d="M5 13l4 4L19 7"
                         ></path>
                     </svg>
-                    회사별 일정 범례
-                </h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
-                    <div
-                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
-                    >
-                        <div
-                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-red-400 to-red-600 rounded-lg shadow-sm"
-                        ></div>
-                        <span
-                            class="text-gray-800 font-medium text-sm sm:text-base"
-                            >회사전체</span
-                        >
-                    </div>
-                    <div
-                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
-                    >
-                        <div
-                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg shadow-sm"
-                        ></div>
-                        <span
-                            class="text-gray-800 font-medium text-sm sm:text-base"
-                            >압타밀</span
-                        >
-                    </div>
-                    <div
-                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
-                    >
-                        <div
-                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-orange-400 to-orange-600 rounded-lg shadow-sm"
-                        ></div>
-                        <span
-                            class="text-gray-800 font-medium text-sm sm:text-base"
-                            >드리미</span
-                        >
-                    </div>
-                    <div
-                        class="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200 shadow-sm"
-                    >
-                        <div
-                            class="w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-sm"
-                        ></div>
-                        <span
-                            class="text-gray-800 font-medium text-sm sm:text-base"
-                            >BT몰</span
-                        >
-                    </div>
                 </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">접수 완료</h3>
+                <p class="text-gray-600 mb-6">
+                    일정 등록 요청이 성공적으로 접수되었습니다.
+                </p>
+                <button
+                    id="closeSuccessModal"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    확인
+                </button>
             </div>
         </div>
 
@@ -704,65 +907,218 @@
             class CompanyCalendar {
                 constructor() {
                     this.currentDate = new Date();
-                    this.events = this.getMockEvents();
+                    this.events = {}; // 날짜별 매핑
                     this.currentTooltip = null;
                     this.init();
                 }
 
-                init() {
+                async init() {
                     try {
+                        await this.loadAllEvents();
                         this.renderCalendar();
                         this.bindEvents();
+                        this.renderImportantAndTodayBox();
+                        this.bindModalEvents();
+                        this.setupDailyWebhook(); // Webhook 타이머 설정
                     } catch (error) {
                         console.error("캘린더 초기화 오류:", error);
                     }
                 }
-                // 추가,수정
 
-                getMockEvents() {
-                    return {
-                        "2000-00-00": [
-                            {
-                                type: "company",
-                                title: "일정",
-                                description: "상세내용",
-                            },
-                        ],
-                        "2025-07-04": [
-                            {
-                                type: "company",
-                                title: "Connect Day",
-                                description: "eibe 전직원 문화체험,회식 일정",
-                            },
-                        ],
-                        "2025-06-15": [
-                            {
-                                type: "company",
-                                title: "반기 전사 회의",
-                                description: "상반기 실적 검토 및 하반기 계획",
-                            },
-                        ],
-                        "2025-06-28": [
-                            {
-                                type: "aptamil",
-                                title: "ex압타밀 제주도 매장 점검",
-                                description:
-                                    "제주도 신규 매장 오픈 준비 및 점검",
-                            },
-                            {
-                                type: "dreame",
-                                title: "ex드리미 업데이트",
-                                description: "3.4.1업데이트가예정되어있습니다",
-                            },
-                        ],
-                    };
+                // events.json에서 모든 일정 불러와 날짜별로 매핑
+                async loadAllEvents() {
+                    try {
+                        const response = await fetch("events.json");
+                        if (!response.ok)
+                            throw new Error(
+                                "일정 데이터를 불러올 수 없습니다."
+                            );
+                        const data = await response.json();
+                        this.events = {};
+                        data.events.forEach((event) => {
+                            // 날짜를 정확하게 파싱 (시간대 문제 해결)
+                            const eventDate = new Date(
+                                event.date + "T00:00:00"
+                            );
+                            const dateString = this.formatDate(eventDate);
+
+                            if (!this.events[dateString])
+                                this.events[dateString] = [];
+                            this.events[dateString].push(event);
+                        });
+                        console.log("로드된 이벤트:", this.events);
+                    } catch (error) {
+                        console.error("일정 데이터 로드 오류:", error);
+                        this.events = {};
+                    }
                 }
 
+                // 상단 중요 일정 & 오늘 일정 박스 렌더링
+                renderImportantAndTodayBox() {
+                    // 모든 중요 일정 수집 (important: true)
+                    const todayString = this.formatDate(new Date());
+                    let importantEvents = [];
+
+                    Object.keys(this.events).forEach((date) => {
+                        this.events[date].forEach((ev) => {
+                            if (ev.important) {
+                                importantEvents.push({ ...ev, date });
+                            }
+                        });
+                    });
+
+                    // 날짜 순으로 정렬 (가까운 날짜부터)
+                    importantEvents.sort(
+                        (a, b) => new Date(a.date) - new Date(b.date)
+                    );
+
+                    // 오늘 일정
+                    const todayEvents = this.events[todayString] || [];
+
+                    // 중요 일정 영역 DOM
+                    const box = document.querySelector(
+                        ".glass-effect.rounded-xl"
+                    );
+                    if (!box) return;
+                    box.innerHTML = `
+                        <div class="flex justify-between items-center mb-4 sm:mb-6">
+                            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 flex items-center">
+                                <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mr-2 sm:mr-3 shadow-sm">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                중요 일정 & 오늘 일정
+                            </h2>
+                            <button id="requestEventBtn" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold text-sm hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-sm flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>일정 등록 요청</span>
+                            </button>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                중요 공지
+                            </h3>
+                            <div class="space-y-3">
+                                ${
+                                    importantEvents.length > 0
+                                        ? importantEvents
+                                              .map(
+                                                  (event) => `
+                                <div class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg border border-orange-200 shadow-sm">
+                                    <div class="w-2 h-2 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mt-1.5 flex-shrink-0 animate-pulse-slow"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <p class="font-semibold text-gray-800 text-sm">${this.escapeHtml(
+                                                event.title
+                                            )}</p>
+                                            <span class="text-xs text-gray-500 ml-2 flex-shrink-0">${
+                                                event.date
+                                            }</span>
+                                        </div>
+                                        <p class="text-gray-600 text-xs">${this.escapeHtml(
+                                            event.description || ""
+                                        )}</p>
+                                    </div>
+                                </div>`
+                                              )
+                                              .join("")
+                                        : `<div class="text-gray-400 text-sm">중요 일정이 없습니다.</div>`
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                오늘 일정
+                            </h3>
+                            <div id="todayEventsList" class="space-y-3">
+                                ${
+                                    todayEvents.length === 0
+                                        ? `<div class="text-center py-4 text-gray-500"><svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><p class="text-sm">오늘 일정이 없습니다.</p></div>`
+                                        : todayEvents
+                                              .map((event) => {
+                                                  const typeColors = {
+                                                      company: {
+                                                          bg: "bg-red-50",
+                                                          border: "border-red-200",
+                                                          dot: "bg-red-500",
+                                                          tag: "bg-red-100 text-red-800",
+                                                      },
+                                                      aptamil: {
+                                                          bg: "bg-blue-50",
+                                                          border: "border-blue-200",
+                                                          dot: "bg-blue-500",
+                                                          tag: "bg-blue-100 text-blue-800",
+                                                      },
+                                                      dreame: {
+                                                          bg: "bg-orange-50",
+                                                          border: "border-orange-200",
+                                                          dot: "bg-orange-500",
+                                                          tag: "bg-orange-100 text-orange-800",
+                                                      },
+                                                      btmall: {
+                                                          bg: "bg-yellow-50",
+                                                          border: "border-yellow-200",
+                                                          dot: "bg-yellow-500",
+                                                          tag: "bg-yellow-100 text-yellow-800",
+                                                      },
+                                                  };
+                                                  const colors =
+                                                      typeColors[event.type] ||
+                                                      typeColors.company;
+
+                                                  return `
+                                    <div class="flex items-start space-x-3 p-3 ${
+                                        colors.bg
+                                    } rounded-lg border ${
+                                                      colors.border
+                                                  } shadow-sm">
+                                        <div class="w-2 h-2 ${
+                                            colors.dot
+                                        } rounded-full mt-1.5 flex-shrink-0"></div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center justify-between mb-1">
+                                                <h4 class="font-semibold text-gray-800 text-sm truncate">${this.escapeHtml(
+                                                    event.title
+                                                )}</h4>
+                                                <span class="text-xs text-gray-500 ml-2 flex-shrink-0">${
+                                                    event.time || ""
+                                                }</span>
+                                            </div>
+                                            <p class="text-xs text-gray-600 mb-2 line-clamp-2">${this.escapeHtml(
+                                                event.description || ""
+                                            )}</p>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                                    colors.tag
+                                                }">${this.escapeHtml(
+                                                      event.type
+                                                  )}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `;
+                                              })
+                                              .join("")
+                                }
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 캘린더 렌더링 (날짜별로 events.json 데이터 사용)
                 renderCalendar() {
                     try {
                         const year = this.currentDate.getFullYear();
                         const month = this.currentDate.getMonth();
-
                         const currentMonthElement =
                             document.getElementById("currentMonth");
                         if (currentMonthElement) {
@@ -770,15 +1126,10 @@
                                 month + 1
                             }월`;
                         }
-
-                        // 해당 월의 첫 번째 날
                         const firstDay = new Date(year, month, 1);
-
-                        // 캘린더 시작일 (이전 달의 날짜들)
                         const startDate = new Date(firstDay);
-                        const dayOfWeek = firstDay.getDay(); // 0=일요일, 1=월요일, ...
+                        const dayOfWeek = firstDay.getDay();
                         startDate.setDate(1 - dayOfWeek);
-
                         const calendarGrid =
                             document.getElementById("calendarGrid");
                         if (!calendarGrid) {
@@ -787,13 +1138,10 @@
                             );
                             return;
                         }
-
                         calendarGrid.innerHTML = "";
-
                         for (let i = 0; i < 42; i++) {
                             const currentDate = new Date(startDate);
                             currentDate.setDate(startDate.getDate() + i);
-
                             const dayElement = this.createDayElement(
                                 currentDate,
                                 year,
@@ -811,12 +1159,10 @@
                         const dayDiv = document.createElement("div");
                         dayDiv.className =
                             "calendar-day bg-white border border-gray-200 p-3 relative";
-
                         const isCurrentMonth = date.getMonth() === currentMonth;
                         const isToday = this.isToday(date);
                         const dateString = this.formatDate(date);
                         const dayEvents = this.events[dateString] || [];
-
                         let dayClass = "text-lg font-bold mb-3 ";
                         if (!isCurrentMonth) {
                             dayClass += "text-gray-400";
@@ -827,7 +1173,6 @@
                         } else {
                             dayClass += "text-gray-800";
                         }
-
                         if (isToday) {
                             dayDiv.classList.add(
                                 "bg-blue-50",
@@ -836,34 +1181,22 @@
                             dayDiv.style.boxShadow =
                                 "0 0 0 3px rgba(59, 130, 246, 0.1)";
                         }
-
-                        // 안전한 HTML 생성
                         const eventsHTML = dayEvents
-                            .map((event, index) => {
+                            .map((event) => {
                                 const safeTitle = this.escapeHtml(event.title);
                                 const safeType = this.escapeHtml(event.type);
                                 const eventColor = this.getEventColor(
                                     event.type
                                 );
-
-                                return `<span
-                                    class="event-tag"
-                                    style="background-color: ${eventColor}"
-                                    data-event-title="${safeTitle}"
-                                    data-event-description="${this.escapeHtml(
-                                        event.description
-                                    )}"
-                                    data-event-type="${safeType}"
-                                >${safeTitle}</span>`;
+                                return `<span class="event-tag" style="background-color: ${eventColor}" data-event-title="${safeTitle}" data-event-description="${this.escapeHtml(
+                                    event.description
+                                )}" data-event-type="${safeType}">${safeTitle}</span>`;
                             })
                             .join("");
-
                         dayDiv.innerHTML = `
                             <div class="${dayClass}">${date.getDate()}</div>
                             <div class="space-y-2">${eventsHTML}</div>
                         `;
-
-                        // 이벤트 리스너 추가
                         dayDiv.querySelectorAll(".event-tag").forEach((tag) => {
                             tag.addEventListener("mouseenter", (e) => {
                                 const eventData = {
@@ -874,26 +1207,25 @@
                                 };
                                 this.showTooltip(e, eventData);
                             });
-
                             tag.addEventListener("mouseleave", () => {
                                 this.hideTooltip();
                             });
                         });
-
                         return dayDiv;
                     } catch (error) {
                         console.error("날짜 요소 생성 오류:", error);
                         const fallbackDiv = document.createElement("div");
                         fallbackDiv.className =
                             "calendar-day bg-white border border-gray-200 p-3 relative";
-                        fallbackDiv.innerHTML = `<div class="text-lg font-bold mb-3 text-gray-800">${date.getDate()}</div>`;
+                        fallbackDiv.innerHTML = `<div class="text-lg font-bold mb-3 text-gray-800">
+                            ${date.getDate()}</div>`;
                         return fallbackDiv;
                     }
                 }
 
                 showTooltip(event, eventData) {
                     try {
-                        // 기존 툴팁 제거
+                        // 기존 툴크 제거
                         this.hideTooltip();
 
                         if (!eventData || !eventData.title) {
@@ -934,7 +1266,7 @@
                         tooltip.classList.add("show");
                         this.currentTooltip = tooltip;
                     } catch (error) {
-                        console.error("툴팁 표시 오류:", error);
+                        console.error("툴크 표시 오류:", error);
                     }
                 }
 
@@ -948,7 +1280,7 @@
                         }
                         this.currentTooltip = null;
                     } catch (error) {
-                        console.error("툴팁 숨김 오류:", error);
+                        console.error("툴크 숨김 오류:", error);
                         this.currentTooltip = null;
                     }
                 }
@@ -965,7 +1297,14 @@
 
                 formatDate(date) {
                     try {
-                        return date.toISOString().split("T")[0];
+                        // 시간대 문제 해결을 위해 로컬 날짜로 포맷
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(
+                            2,
+                            "0"
+                        );
+                        const day = String(date.getDate()).padStart(2, "0");
+                        return `${year}-${month}-${day}`;
                     } catch (error) {
                         console.error("날짜 포맷 오류:", error);
                         return "";
@@ -1058,6 +1397,333 @@
                         .replace(/>/g, "&gt;")
                         .replace(/"/g, "&quot;")
                         .replace(/'/g, "&#39;");
+                }
+
+                // 모달 이벤트 바인딩
+                bindModalEvents() {
+                    const requestBtn =
+                        document.getElementById("requestEventBtn");
+                    const modal = document.getElementById("eventRequestModal");
+                    const closeBtn = document.getElementById("closeModalBtn");
+                    const cancelBtn = document.getElementById("cancelBtn");
+                    const form = document.getElementById("eventRequestForm");
+                    const loadingOverlay =
+                        document.getElementById("loadingOverlay");
+                    const successModal =
+                        document.getElementById("successModal");
+                    const closeSuccessBtn =
+                        document.getElementById("closeSuccessModal");
+
+                    // 모달 열기
+                    if (requestBtn) {
+                        requestBtn.addEventListener("click", () => {
+                            this.openModal();
+                        });
+                    }
+
+                    // 모달 닫기
+                    if (closeBtn) {
+                        closeBtn.addEventListener("click", () => {
+                            this.closeModal();
+                        });
+                    }
+
+                    if (cancelBtn) {
+                        cancelBtn.addEventListener("click", () => {
+                            this.closeModal();
+                        });
+                    }
+
+                    // 모달 외부 클릭 시 닫기
+                    if (modal) {
+                        modal.addEventListener("click", (e) => {
+                            if (e.target === modal) {
+                                this.closeModal();
+                            }
+                        });
+                    }
+
+                    // 폼 제출
+                    if (form) {
+                        form.addEventListener("submit", (e) => {
+                            e.preventDefault();
+                            this.handleEventRequest();
+                        });
+                    }
+
+                    // 성공 모달 닫기
+                    if (closeSuccessBtn) {
+                        closeSuccessBtn.addEventListener("click", () => {
+                            this.closeSuccessModal();
+                        });
+                    }
+
+                    // ESC 키로 모달 닫기
+                    document.addEventListener("keydown", (e) => {
+                        if (e.key === "Escape") {
+                            this.closeModal();
+                            this.closeSuccessModal();
+                        }
+                    });
+                }
+
+                // 모달 열기
+                openModal() {
+                    const modal = document.getElementById("eventRequestModal");
+                    if (modal) {
+                        modal.classList.remove("hidden");
+                        // 오늘 날짜를 기본값으로 설정
+                        const dateInput = document.getElementById("eventDate");
+                        if (dateInput) {
+                            dateInput.value = new Date()
+                                .toISOString()
+                                .split("T")[0];
+                        }
+                    }
+                }
+
+                // 모달 닫기
+                closeModal() {
+                    const modal = document.getElementById("eventRequestModal");
+                    const form = document.getElementById("eventRequestForm");
+                    if (modal) {
+                        modal.classList.add("hidden");
+                    }
+                    if (form) {
+                        form.reset();
+                    }
+                }
+
+                // 성공 모달 닫기
+                closeSuccessModal() {
+                    const successModal =
+                        document.getElementById("successModal");
+                    if (successModal) {
+                        successModal.classList.add("hidden");
+                    }
+                }
+
+                // 일정 요청 처리
+                async handleEventRequest() {
+                    const form = document.getElementById("eventRequestForm");
+                    const loadingOverlay =
+                        document.getElementById("loadingOverlay");
+                    const successModal =
+                        document.getElementById("successModal");
+
+                    if (!form) return;
+
+                    const formData = new FormData(form);
+                    const requestData = {
+                        requester: formData.get("requester"),
+                        eventDate: formData.get("eventDate"),
+                        company: formData.get("company"),
+                        eventTitle: formData.get("eventTitle"),
+                        eventDescription: formData.get("eventDescription"),
+                        requestTime: new Date().toISOString(),
+                    };
+
+                    // 확인 창
+                    const confirmed = confirm("이대로 등록할까요?");
+                    if (!confirmed) return;
+
+                    try {
+                        // 로딩 표시
+                        if (loadingOverlay) {
+                            loadingOverlay.classList.remove("hidden");
+                        }
+
+                        // 실제 API 호출 (여기서는 시뮬레이션)
+                        await this.submitEventRequest(requestData);
+
+                        // 모달 닫기
+                        this.closeModal();
+
+                        // 로딩 숨기기
+                        if (loadingOverlay) {
+                            loadingOverlay.classList.add("hidden");
+                        }
+
+                        // 성공 모달 표시
+                        if (successModal) {
+                            successModal.classList.remove("hidden");
+                        }
+                    } catch (error) {
+                        console.error("일정 요청 처리 오류:", error);
+                        alert("일정 요청 처리 중 오류가 발생했습니다.");
+
+                        // 로딩 숨기기
+                        if (loadingOverlay) {
+                            loadingOverlay.classList.add("hidden");
+                        }
+                    }
+                }
+
+                // 일정 요청 제출
+                async submitEventRequest(requestData) {
+                    try {
+                        console.log("일정 요청 데이터:", requestData);
+
+                        // Google Apps Script 환경인지 확인
+                        if (typeof google !== "undefined" && google.script) {
+                            // Google Apps Script 환경 - 실제 함수 호출
+                            return new Promise((resolve, reject) => {
+                                google.script.run
+                                    .withSuccessHandler(function (result) {
+                                        console.log(
+                                            "Google Apps Script 응답:",
+                                            result
+                                        );
+                                        resolve(result);
+                                    })
+                                    .withFailureHandler(function (error) {
+                                        console.error(
+                                            "Google Apps Script 오류:",
+                                            error
+                                        );
+                                        reject(
+                                            new Error(
+                                                error.message ||
+                                                    "일정 요청 제출에 실패했습니다."
+                                            )
+                                        );
+                                    })
+                                    .submitEventRequest(requestData);
+                            });
+                        } else {
+                            // 로컬 환경 - Google Apps Script API 직접 호출
+                            console.log(
+                                "로컬 환경에서 Google Apps Script API 호출"
+                            );
+
+                            const googleAppsScriptUrl =
+                                "https://script.google.com/macros/s/AKfycbzGOrivcOR2O0pphxWZoA8Jzzejyil2i5mQe1ePMWXkGQGxRfTnZwOZUeoUaR2NODRj/exec";
+
+                            const response = await fetch(googleAppsScriptUrl, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    action: "submitEventRequest",
+                                    data: requestData,
+                                }),
+                            });
+
+                            if (response.ok) {
+                                const result = await response.json();
+                                console.log(
+                                    "Google Apps Script API 응답:",
+                                    result
+                                );
+                                return result;
+                            } else {
+                                throw new Error(
+                                    `HTTP ${response.status}: ${response.statusText}`
+                                );
+                            }
+                        }
+                    } catch (error) {
+                        console.error("일정 요청 처리 오류:", error);
+                        throw error;
+                    }
+                }
+
+                // 매일 08:00에 Webhook 발송 설정
+                setupDailyWebhook() {
+                    try {
+                        // 다음 08:00까지 대기 시간 계산
+                        const now = new Date();
+                        const targetTime = new Date();
+                        targetTime.setHours(8, 0, 0, 0); // 한국시간 08:00
+
+                        // 오늘 08:00이 지났으면 내일 08:00으로 설정
+                        if (now >= targetTime) {
+                            targetTime.setDate(targetTime.getDate() + 1);
+                        }
+
+                        const timeUntilTarget =
+                            targetTime.getTime() - now.getTime();
+
+                        console.log(
+                            `다음 Webhook 발송: ${targetTime.toLocaleString(
+                                "ko-KR"
+                            )}`
+                        );
+
+                        // 첫 번째 실행
+                        setTimeout(() => {
+                            this.sendDailyWebhook();
+                            // 이후 24시간마다 반복
+                            setInterval(() => {
+                                this.sendDailyWebhook();
+                            }, 24 * 60 * 60 * 1000); // 24시간
+                        }, timeUntilTarget);
+                    } catch (error) {
+                        console.error("Webhook 타이머 설정 오류:", error);
+                    }
+                }
+
+                // 매일 08:00에 실행되는 Webhook 발송
+                async sendDailyWebhook() {
+                    try {
+                        const todayString = this.formatDate(new Date());
+                        const todayEvents = this.events[todayString] || [];
+
+                        if (todayEvents.length === 0) {
+                            console.log(
+                                "오늘 일정이 없어 Webhook 발송을 건너뜁니다."
+                            );
+                            return;
+                        }
+
+                        // Webhook URL 설정 (나중에 변경 가능)
+                        const webhookUrl =
+                            "https://your-webhook-url.com/events"; // ← 여기에 실제 URL 입력
+
+                        const payload = {
+                            date: todayString,
+                            events: todayEvents,
+                            timestamp: new Date().toISOString(),
+                            timezone: "Asia/Seoul",
+                            message: `📅 ${todayString} 오늘 일정 안내`,
+                            totalEvents: todayEvents.length,
+                        };
+
+                        const response = await fetch(webhookUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "User-Agent": "TeamScheduler/1.0",
+                            },
+                            body: JSON.stringify(payload),
+                        });
+
+                        if (response.ok) {
+                            console.log(
+                                `✅ ${todayString} 오늘 일정이 Webhook으로 성공적으로 발송되었습니다.`
+                            );
+                            console.log(
+                                "발송된 일정:",
+                                todayEvents.map((e) => e.title)
+                            );
+                        } else {
+                            throw new Error(
+                                `HTTP ${response.status}: ${response.statusText}`
+                            );
+                        }
+                    } catch (error) {
+                        console.error("Webhook 발송 오류:", error);
+                        console.log(
+                            "Webhook URL을 확인하거나 네트워크 연결을 점검해주세요."
+                        );
+                    }
+                }
+
+                // 수동으로 Webhook 발송 (테스트용)
+                async sendWebhookNow() {
+                    console.log("수동 Webhook 발송 시작...");
+                    await this.sendDailyWebhook();
                 }
             }
 
