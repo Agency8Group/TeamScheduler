@@ -121,8 +121,8 @@ function doPost(e) {
 }
 
 /**
- * 매일 오전 8시에 실행되는 Webhook 발송 함수
- * Google Apps Script의 시간 기반 트리거로 설정해야 함
+ * 매일 설정된 시간에 실행되는 Webhook 발송 함수
+ * Google Apps Script의 시간 기반 트리거로 설정해야 함 (매일 실행)
  */
 function sendDailyWebhook() {
   try {
@@ -137,6 +137,20 @@ function sendDailyWebhook() {
     // Webhook이 비활성화되어 있으면 실행하지 않음
     if (!CONFIG.webhook.enabled) {
       Logger.log("Webhook이 비활성화되어 있습니다. config.json에서 enabled를 true로 설정하세요.");
+      return;
+    }
+    
+    // 현재 시간과 설정된 발송 시간 비교
+    var now = new Date();
+    var currentHour = now.getHours();
+    var targetHour = CONFIG.webhook.hour || 8; // 기본값 8시
+    
+    Logger.log("현재 시간: " + currentHour + "시");
+    Logger.log("설정된 발송 시간: " + targetHour + "시");
+    
+    // 설정된 시간이 아니면 발송하지 않음
+    if (currentHour !== targetHour) {
+      Logger.log("설정된 발송 시간(" + targetHour + "시)이 아니므로 발송을 건너뜁니다.");
       return;
     }
     
@@ -250,15 +264,36 @@ function checkConfig() {
   if (loadConfig()) {
     Logger.log("=== 현재 설정 확인 ===");
     Logger.log("Webhook URL: " + CONFIG.webhook.url);
-    Logger.log("Events URL: " + CONFIG.events.url);
-    Logger.log("Webhook Hour: " + CONFIG.webhook.hour + "시");
-    Logger.log("Webhook Enabled: " + CONFIG.webhook.enabled);
-    Logger.log("Timezone: " + CONFIG.app.timezone);
-    Logger.log("App Version: " + CONFIG.app.version);
-    Logger.log("========================");
+    Logger.log("Webhook 활성화: " + CONFIG.webhook.enabled);
+    Logger.log("발송 시간: " + CONFIG.webhook.hour + "시");
+    Logger.log("타임존: " + CONFIG.app.timezone);
+    Logger.log("앱 이름: " + CONFIG.app.name);
+    Logger.log("앱 버전: " + CONFIG.app.version);
+    Logger.log("=====================");
   } else {
     Logger.log("설정 파일을 로드할 수 없습니다.");
   }
+}
+
+/**
+ * 트리거 설정 안내 함수
+ * 이 함수를 실행하면 트리거 설정 방법을 로그에 출력합니다
+ */
+function setupTrigger() {
+  Logger.log("=== Google Apps Script 트리거 설정 방법 ===");
+  Logger.log("1. Google Apps Script 편집기에서 '트리거' 메뉴 클릭");
+  Logger.log("2. '트리거 추가' 버튼 클릭");
+  Logger.log("3. 다음 설정으로 트리거 생성:");
+  Logger.log("   - 실행할 함수: sendDailyWebhook");
+  Logger.log("   - 실행할 배포: Head");
+  Logger.log("   - 이벤트 소스: 시간 기반");
+  Logger.log("   - 시간 기반 트리거 유형: 매일");
+  Logger.log("   - 시간: 매일 오전 12:00 (또는 원하는 시간)");
+  Logger.log("4. '저장' 버튼 클릭");
+  Logger.log("");
+  Logger.log("※ 발송 시간 변경은 config.json의 webhook.hour 값을 수정하면 됩니다.");
+  Logger.log("※ 트리거는 매일 실행되지만, config.json의 시간과 일치할 때만 실제 발송됩니다.");
+  Logger.log("==========================================");
 }
 
 /**

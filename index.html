@@ -918,7 +918,6 @@
                         this.bindEvents();
                         this.renderImportantAndTodayBox();
                         this.bindModalEvents();
-                        this.setupDailyWebhook(); // Webhook 타이머 설정
                     } catch (error) {
                         console.error("캘린더 초기화 오류:", error);
                     }
@@ -1599,120 +1598,6 @@
                         console.error("일정 요청 처리 오류:", error);
                         throw error;
                     }
-                }
-
-                // 매일 08:00에 Webhook 발송 설정
-                setupDailyWebhook() {
-                    try {
-                        // 다음 08:00까지 대기 시간 계산
-                        const now = new Date();
-                        const targetTime = new Date();
-                        targetTime.setHours(8, 0, 0, 0); // 한국시간 08:00
-
-                        // 오늘 08:00이 지났으면 내일 08:00으로 설정
-                        if (now >= targetTime) {
-                            targetTime.setDate(targetTime.getDate() + 1);
-                        }
-
-                        const timeUntilTarget =
-                            targetTime.getTime() - now.getTime();
-
-                        console.log(
-                            `다음 Webhook 발송: ${targetTime.toLocaleString(
-                                "ko-KR"
-                            )}`
-                        );
-
-                        // 첫 번째 실행
-                        setTimeout(() => {
-                            this.sendDailyWebhook();
-                            // 이후 24시간마다 반복
-                            setInterval(() => {
-                                this.sendDailyWebhook();
-                            }, 24 * 60 * 60 * 1000); // 24시간
-                        }, timeUntilTarget);
-                    } catch (error) {
-                        console.error("Webhook 타이머 설정 오류:", error);
-                    }
-                }
-
-                // 매일 08:00에 실행되는 Webhook 발송
-                async sendDailyWebhook() {
-                    try {
-                        const todayString = this.formatDate(new Date());
-                        const todayEvents = this.events[todayString] || [];
-
-                        if (todayEvents.length === 0) {
-                            console.log(
-                                "오늘 일정이 없어 Webhook 발송을 건너뜁니다."
-                            );
-                            return;
-                        }
-
-                        // config.json에서 Webhook 설정 로드
-                        let config;
-                        try {
-                            const configResponse = await fetch("config.json");
-                            if (!configResponse.ok) {
-                                throw new Error(
-                                    "설정 파일을 로드할 수 없습니다."
-                                );
-                            }
-                            config = await configResponse.json();
-                        } catch (error) {
-                            console.error("설정 파일 로드 오류:", error);
-                            return;
-                        }
-
-                        // Webhook이 비활성화되어 있으면 실행하지 않음
-                        if (!config.webhook.enabled) {
-                            console.log("Webhook이 비활성화되어 있습니다.");
-                            return;
-                        }
-
-                        const payload = {
-                            date: todayString,
-                            events: todayEvents,
-                            timestamp: new Date().toISOString(),
-                            timezone: config.app.timezone || "Asia/Seoul",
-                            message: `📅 ${todayString} 오늘 일정 안내`,
-                            totalEvents: todayEvents.length,
-                        };
-
-                        const response = await fetch(config.webhook.url, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "User-Agent": `${config.app.name}/${config.app.version}`,
-                            },
-                            body: JSON.stringify(payload),
-                        });
-
-                        if (response.ok) {
-                            console.log(
-                                `✅ ${todayString} 오늘 일정이 Webhook으로 성공적으로 발송되었습니다.`
-                            );
-                            console.log(
-                                "발송된 일정:",
-                                todayEvents.map((e) => e.title)
-                            );
-                        } else {
-                            throw new Error(
-                                `HTTP ${response.status}: ${response.statusText}`
-                            );
-                        }
-                    } catch (error) {
-                        console.error("Webhook 발송 오류:", error);
-                        console.log(
-                            "Webhook URL을 확인하거나 네트워크 연결을 점검해주세요."
-                        );
-                    }
-                }
-
-                // 수동으로 Webhook 발송 (테스트용)
-                async sendWebhookNow() {
-                    console.log("수동 Webhook 발송 시작...");
-                    await this.sendDailyWebhook();
                 }
             }
 
