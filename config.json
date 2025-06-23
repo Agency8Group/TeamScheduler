@@ -2,7 +2,7 @@
   "webhook": {
     "url": "https://teamroom.nate.com/api/webhook/910f895f/3oQ1GiUSb0Vm4NdyZjI8mWYy",
     "enabled": true,
-    "hour": 14,
+    "hour": 8,
     "timezone": "Asia/Seoul"
   },
   "events": {
