@@ -181,26 +181,23 @@ function sendDailyWebhook() {
       return;
     }
     
-    // Webhook 페이로드 구성
+    // Webhook 페이로드 구성 (파이썬 코드와 동일하게 수정)
+    var messageTitle = "📅 " + todayString + " 오늘 일정 안내";
+    var messageBody = todayEvents.map(function(event) {
+      return "- " + event.title + (event.description ? " (" + event.description + ")" : "");
+    }).join("\n");
+
     var payload = {
-      date: todayString,
-      events: todayEvents,
-      timestamp: new Date().toISOString(),
-      timezone: CONFIG.app.timezone,
-      message: "📅 " + todayString + " 오늘 일정 안내",
-      totalEvents: todayEvents.length
+      "text": messageTitle + "\n" + messageBody
     };
     
     Logger.log("Webhook 페이로드: " + JSON.stringify(payload));
     
-    // Webhook 발송
+    // Webhook 발송 (파이썬 코드와 동일하게 수정)
     var options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': CONFIG.app.name + '/' + CONFIG.app.version
-      },
-      payload: JSON.stringify(payload)
+      'method': 'post',
+      'contentType': 'application/json',
+      'payload': JSON.stringify(payload)
     };
     
     var response = UrlFetchApp.fetch(CONFIG.webhook.url, options);
