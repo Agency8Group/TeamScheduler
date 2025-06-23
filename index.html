@@ -1614,24 +1614,41 @@
                             return;
                         }
 
-                        // Webhook URL 설정 (나중에 변경 가능)
-                        const webhookUrl =
-                            "https://teamroom.nate.com/api/webhook/910f895f/3oQ1GiUSb0Vm4NdyZjI8mWYy"; // ← 여기에 실제 URL 입력
+                        // config.json에서 Webhook 설정 로드
+                        let config;
+                        try {
+                            const configResponse = await fetch("config.json");
+                            if (!configResponse.ok) {
+                                throw new Error(
+                                    "설정 파일을 로드할 수 없습니다."
+                                );
+                            }
+                            config = await configResponse.json();
+                        } catch (error) {
+                            console.error("설정 파일 로드 오류:", error);
+                            return;
+                        }
+
+                        // Webhook이 비활성화되어 있으면 실행하지 않음
+                        if (!config.webhook.enabled) {
+                            console.log("Webhook이 비활성화되어 있습니다.");
+                            return;
+                        }
 
                         const payload = {
                             date: todayString,
                             events: todayEvents,
                             timestamp: new Date().toISOString(),
-                            timezone: "Asia/Seoul",
+                            timezone: config.app.timezone || "Asia/Seoul",
                             message: `📅 ${todayString} 오늘 일정 안내`,
                             totalEvents: todayEvents.length,
                         };
 
-                        const response = await fetch(webhookUrl, {
+                        const response = await fetch(config.webhook.url, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
-                                "User-Agent": "TeamScheduler/1.0",
+                                "User-Agent": `${config.app.name}/${config.app.version}`,
                             },
                             body: JSON.stringify(payload),
                         });

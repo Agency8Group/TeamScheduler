@@ -1,0 +1,21 @@
+{
+  "webhook": {
+    "url": "https://teamroom.nate.com/api/webhook/910f895f/3oQ1GiUSb0Vm4NdyZjI8mWYy",
+    "enabled": true,
+    "hour": 8,
+    "timezone": "Asia/Seoul"
+  },
+  "events": {
+    "url": "https://agency8group.github.io/TeamScheduler/events.json"
+  },
+  "app": {
+    "name": "TeamScheduler",
+    "version": "1.0.0",
+    "timezone": "Asia/Seoul",
+    "language": "ko"
+  },
+  "logging": {
+    "enabled": true,
+    "level": "info"
+  }
+} 
