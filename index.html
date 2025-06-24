@@ -13,7 +13,10 @@
                             company: "#EF4444", // 회사전체 - 빨간색
                             aptamil: "#3B82F6", // 압타밀 - 파란색
                             dreamy: "#1F2937", // 드리미 - 검은색
-                            btmall: "#F59E0B", // bt몰 - 노란색
+                            brighton: "#F59E0B", // bt몰 - 노란색
+                            customer: "#EC4899", // 고객센터 - 핑크색
+                            marketing: "#06B6D4", // 마케팅 - 청록색
+                            content: "#84CC16", // 컨텐츠 - 연두색
                             meeting: "#EF4444", // 미팅 - 빨간색
                             holiday: "#10B981", // 휴무 - 초록색
                             event: "#F59E0B", // 이벤트 - 주황색
@@ -163,7 +166,7 @@
                 background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
             }
 
-            .event-tag.bg-btmall {
+            .event-tag.bg-brighton {
                 background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             }
 
@@ -539,7 +542,7 @@
                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
                             ></path>
                         </svg>
-                        중요 공지
+                        중요 일정
                     </h3>
                     <div class="space-y-3">
                         <div
@@ -563,22 +566,27 @@
                 <!-- 오늘 일정 섹션 -->
                 <div>
                     <h3
-                        class="text-lg font-semibold text-gray-700 mb-3 flex items-center"
+                        class="text-lg font-semibold text-gray-700 mb-3 flex items-center justify-between"
                     >
-                        <svg
-                            class="w-5 h-5 mr-2 text-green-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <div class="flex items-center">
+                            <svg
+                                class="w-5 h-5 mr-2 text-green-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+                            오늘 일정
+                        </div>
+                        <span class="text-xs text-gray-500 font-normal"
+                            >매일 오전 08시 자동으로 팀룸에 전송됩니다.</span
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            ></path>
-                        </svg>
-                        오늘 일정
                     </h3>
                     <div id="todayEventsList" class="space-y-3">
                         <!-- JavaScript로 동적 생성 -->
@@ -758,7 +766,7 @@
                         <div>
                             <label
                                 class="block text-sm font-medium text-gray-700 mb-2"
-                                >브랜드명 *</label
+                                >브랜드&팀명 *</label
                             >
                             <input
                                 type="text"
@@ -769,12 +777,12 @@
                             />
                         </div>
 
-                        <!-- 브랜드별 색상 범례 -->
+                        <!-- 브랜드&팀별 색상 범례 -->
                         <div
                             class="bg-gray-50 rounded-lg p-3 border border-gray-200"
                         >
                             <p class="text-xs font-medium text-gray-700 mb-2">
-                                브랜드별 색상 안내
+                                브랜드&팀별 색상 안내
                             </p>
                             <div class="grid grid-cols-2 gap-2 text-xs">
                                 <div class="flex items-center space-x-2">
@@ -791,7 +799,7 @@
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     <div
-                                        class="w-3 h-3 bg-orange-500 rounded-full"
+                                        class="w-3 h-3 bg-gray-800 rounded-full"
                                     ></div>
                                     <span class="text-gray-600">드리미</span>
                                 </div>
@@ -800,6 +808,24 @@
                                         class="w-3 h-3 bg-yellow-500 rounded-full"
                                     ></div>
                                     <span class="text-gray-600">BT몰</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div
+                                        class="w-3 h-3 bg-pink-500 rounded-full"
+                                    ></div>
+                                    <span class="text-gray-600">고객센터</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div
+                                        class="w-3 h-3 bg-cyan-500 rounded-full"
+                                    ></div>
+                                    <span class="text-gray-600">마케팅</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div
+                                        class="w-3 h-3 bg-lime-500 rounded-full"
+                                    ></div>
+                                    <span class="text-gray-600">컨텐츠</span>
                                 </div>
                             </div>
                         </div>
@@ -1000,7 +1026,7 @@
                                 <svg class="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                                 </svg>
-                                중요 공지
+                                중요 일정
                             </h3>
                             <div class="space-y-3">
                                 ${
@@ -1031,11 +1057,14 @@
                             </div>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                오늘 일정
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    오늘 일정
+                                </div>
+                                <span class="text-xs text-gray-500 font-normal">매일 오전 08시 자동으로 팀룸에 전송됩니다.</span>
                             </h3>
                             <div id="todayEventsList" class="space-y-3">
                                 ${
@@ -1062,7 +1091,7 @@
                                                           dot: "bg-orange-500",
                                                           tag: "bg-orange-100 text-orange-800",
                                                       },
-                                                      btmall: {
+                                                      brighton: {
                                                           bg: "bg-yellow-50",
                                                           border: "border-yellow-200",
                                                           dot: "bg-yellow-500",
@@ -1186,7 +1215,12 @@
                                 const eventColor = this.getEventColor(
                                     event.type
                                 );
-                                return `<span class="event-tag" style="background-color: ${eventColor}" data-event-title="${safeTitle}" data-event-description="${this.escapeHtml(
+                                // 드리미 브랜드인 경우 텍스트 색상을 하얀색으로 설정
+                                const textColor =
+                                    event.type === "dreame"
+                                        ? "color: white;"
+                                        : "";
+                                return `<span class="event-tag" style="background-color: ${eventColor}; ${textColor}" data-event-title="${safeTitle}" data-event-description="${this.escapeHtml(
                                     event.description
                                 )}" data-event-type="${safeType}">${safeTitle}</span>`;
                             })
@@ -1382,8 +1416,11 @@
                     const colors = {
                         company: "#ef4444", // red
                         aptamil: "#3b82f6", // blue
-                        dreame: "#f97316", // orange
-                        btmall: "#eab308", // yellow
+                        dreame: "#1f2937", // gray-800 (드리미)
+                        brighton: "#eab308", // yellow
+                        customer: "#ec4899", // pink (고객센터)
+                        marketing: "#06b6d4", // cyan (마케팅)
+                        content: "#84cc16", // lime (컨텐츠)
                     };
                     return colors[type] || "#6b7280";
                 }
@@ -1566,7 +1603,7 @@
                         console.log("=== 일정 요청 데이터 ===");
                         console.log("작성자:", requestData.requester);
                         console.log("요청일자:", requestData.eventDate);
-                        console.log("브랜드명:", requestData.company);
+                        console.log("브랜드&팀명:", requestData.company);
                         console.log("제목:", requestData.eventTitle);
                         console.log("상세설명:", requestData.eventDescription);
                         console.log("요청시간:", requestData.requestTime);
