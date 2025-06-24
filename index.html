@@ -501,7 +501,7 @@
                                 ></path>
                             </svg>
                         </div>
-                        중요 일정 & 오늘 일정
+                        중요 일정 & 오늘의 일정 알림
                     </h2>
                     <button
                         id="requestEventBtn"
@@ -563,7 +563,7 @@
                     </div>
                 </div>
 
-                <!-- 오늘 일정 섹션 -->
+                <!-- 오늘의 일정 알림 섹션 -->
                 <div>
                     <h3
                         class="text-lg font-semibold text-gray-700 mb-3 flex items-center justify-between"
@@ -582,7 +582,7 @@
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                 ></path>
                             </svg>
-                            오늘 일정
+                            오늘의 일정 알림
                         </div>
                         <span class="text-xs text-gray-500 font-normal"
                             >매일 오전 08시 자동으로 팀룸에 전송됩니다.</span
@@ -977,7 +977,7 @@
                     }
                 }
 
-                // 상단 중요 일정 & 오늘 일정 박스 렌더링
+                // 상단 중요 일정 & 오늘의 일정 알림 박스 렌더링
                 renderImportantAndTodayBox() {
                     // 모든 중요 일정 수집 (important: true)
                     const todayString = this.formatDate(new Date());
@@ -996,7 +996,7 @@
                         (a, b) => new Date(a.date) - new Date(b.date)
                     );
 
-                    // 오늘 일정
+                    // 오늘의 일정 알림
                     const todayEvents = this.events[todayString] || [];
 
                     // 중요 일정 영역 DOM
@@ -1012,7 +1012,7 @@
                                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
-                                중요 일정 & 오늘 일정
+                                중요 일정 & 오늘의 일정 알림
                             </h2>
                             <button id="requestEventBtn" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold text-sm hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-sm flex items-center space-x-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1062,14 +1062,14 @@
                                     <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                     </svg>
-                                    오늘 일정
+                                    오늘의 일정 알림
                                 </div>
                                 <span class="text-xs text-gray-500 font-normal">매일 오전 08시 자동으로 팀룸에 전송됩니다.</span>
                             </h3>
                             <div id="todayEventsList" class="space-y-3">
                                 ${
                                     todayEvents.length === 0
-                                        ? `<div class="text-center py-4 text-gray-500"><svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><p class="text-sm">오늘 일정이 없습니다.</p></div>`
+                                        ? `<div class="text-center py-4 text-gray-500"><svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><p class="text-sm">오늘의 일정 알림이 없습니다.</p></div>`
                                         : todayEvents
                                               .map((event) => {
                                                   const typeColors = {
