@@ -6,6 +6,7 @@
       "type": "btmall",
       "title": "네이트온test",
       "description": "메신저 자동발송 테스트"
+   
     },
     {
       "date": "2025-06-24",
@@ -41,7 +42,8 @@
       "date": "2025-06-25",
       "type": "company",
       "title": "네이트온test",
-      "description": "메신저 자동발송 테스트"
+      "description": "메신저 자동발송 테스트",
+      "important": true
     }
   ]
 } 
