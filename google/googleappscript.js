@@ -182,13 +182,14 @@ function sendDailyWebhook() {
     }
     
     // Webhook 페이로드 구성 (파이썬 코드와 동일하게 수정)
+    var magazineNotice = "📰 사내매거진 알림!\n@https://agency8group.github.io/In-house-Magazine/\n\n";
     var messageTitle = "📅 " + todayString + " 오늘 일정 안내";
     var messageBody = todayEvents.map(function(event) {
       return "- " + event.title + (event.description ? " (" + event.description + ")" : "");
     }).join("\n");
 
     var payload = {
-      "text": messageTitle + "\n" + messageBody
+      "text": magazineNotice + messageTitle + "\n" + messageBody
     };
     
     Logger.log("Webhook 페이로드: " + JSON.stringify(payload));

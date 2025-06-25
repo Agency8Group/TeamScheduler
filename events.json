@@ -51,6 +51,13 @@
       "title": "네이트온test",
       "description": "메신저 자동발송 테스트",
       "important": true
+    },
+    {
+      "date": "2025-06-26",
+      "type": "customer",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트",
+      "important": true
     }
   ]
 } 
