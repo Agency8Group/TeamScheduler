@@ -13,6 +13,60 @@
       "title": "테스트",
       "description": "메신저 자동발송 테스트"
    
+<<<<<<< HEAD
+=======
+    },
+    {
+      "date": "2025-06-24",
+      "type": "aptamil",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트"
+    },
+     {
+      "date": "2025-06-24",
+      "type": "dreame",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트"
+    },
+        {
+      "date": "2025-06-25",
+      "type": "brighton",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트"
+    },
+    {
+      "date": "2025-06-25",
+      "type": "aptamil",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트"
+    },
+     {
+      "date": "2025-06-25",
+      "type": "dreame",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트"
+    },
+         {
+      "date": "2025-06-25",
+      "type": "company",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트",
+      "important": true
+    },
+    {
+      "date": "2025-06-25",
+      "type": "customer",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트",
+      "important": true
+    },
+    {
+      "date": "2025-06-26",
+      "type": "customer",
+      "title": "네이트온test",
+      "description": "메신저 자동발송 테스트",
+      "important": true
+>>>>>>> f7e12b1eca84bc999202410d7471bd7649156c38
     }
   ]
 } 
