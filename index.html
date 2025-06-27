@@ -181,8 +181,14 @@
                 pointer-events: none;
                 opacity: 0;
                 max-width: 250px;
+                min-width: 200px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                 border: 1px solid #374151;
+                word-wrap: break-word;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                line-height: 1.4;
             }
 
             .tooltip.show {
@@ -1207,13 +1213,16 @@
 
                         const tooltip = document.createElement("div");
                         tooltip.className = "tooltip";
+
+                        // 긴 텍스트를 적절히 줄바꿈 처리
+                        const title = this.escapeHtml(eventData.title);
+                        const description = this.escapeHtml(
+                            eventData.description || ""
+                        );
+
                         tooltip.innerHTML = `
-                            <div style="font-weight: 600; margin-bottom: 4px;">${this.escapeHtml(
-                                eventData.title
-                            )}</div>
-                            <div style="color: #d1d5db; font-size: 0.8rem;">${this.escapeHtml(
-                                eventData.description || ""
-                            )}</div>
+                            <div style="font-weight: 600; margin-bottom: 4px; word-wrap: break-word;">${title}</div>
+                            <div style="color: #d1d5db; font-size: 0.8rem; word-wrap: break-word;">${description}</div>
                         `;
 
                         document.body.appendChild(tooltip);
