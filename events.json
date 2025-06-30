@@ -54,5 +54,12 @@
       "title": "일정추가2",
       "description": "일정추가 상세내용"
     }
+    ,
+    {
+      "date": "2025-07-01",
+      "type": "company",
+      "title": "카카오톡",
+      "description": "5층 대회의실 사용 공지"
+    }
   ]
 } 
