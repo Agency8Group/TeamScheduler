@@ -8,14 +8,33 @@ def run_git_command(command, description):
     try:
         # 현재 스크립트가 있는 디렉토리에서 명령어 실행
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True, cwd=script_dir)
+        
+        # Windows에서 한글 인코딩 문제 해결을 위한 설정
+        startupinfo = None
+        if os.name == 'nt':  # Windows
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+        
+        result = subprocess.run(
+            command, 
+            shell=True, 
+            check=True, 
+            capture_output=True, 
+            text=True, 
+            cwd=script_dir,
+            startupinfo=startupinfo,
+            encoding='utf-8',
+            errors='ignore'
+        )
         print(f"✅ {description} 완료!")
         if result.stdout:
             print(f"출력: {result.stdout.strip()}")
         return True
     except subprocess.CalledProcessError as e:
         print(f"❌ {description} 실패!")
-        print(f"오류: {e.stderr.strip()}")
+        if e.stderr:
+            print(f"오류: {e.stderr.strip()}")
         return False
 
 def main():
