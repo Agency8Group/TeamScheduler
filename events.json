@@ -47,5 +47,12 @@
       "title": "일정추가",
       "description": "일정추가 상세내용"
     }
+    ,
+    {
+      "date": "2025-07-01",
+      "type": "company",
+      "title": "일정추가2",
+      "description": "일정추가 상세내용"
+    }
   ]
 } 
