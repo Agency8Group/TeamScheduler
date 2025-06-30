@@ -17,7 +17,28 @@
       "date": "2025-06-30",
       "type": "company",
       "title": "테스트",
-      "description": "loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem"
+      "description": "lorem"
+    }
+    ,
+    {
+      "date": "2025-07-01",
+      "type": "brighton",
+      "title": "테스트",
+      "description": "lorem"
+    }
+    ,
+    {
+      "date": "2025-07-01",
+      "type": "customer",
+      "title": "테스트",
+      "description": "lorem"
+    }
+    ,
+    {
+      "date": "2025-07-01",
+      "type": "marketing",
+      "title": "테스트",
+      "description": "lorem"
     }
   ]
 } 
