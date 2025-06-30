@@ -40,5 +40,12 @@
       "title": "테스트마지막test",
       "description": "lorem"
     }
+    ,
+    {
+      "date": "2025-07-01",
+      "type": "company",
+      "title": "일정추가",
+      "description": "일정추가 상세내용"
+    }
   ]
 } 
