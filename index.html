@@ -88,65 +88,22 @@
 
             /* 이벤트 태그 텍스트 개선 */
             .event-tag {
-                font-weight: 500;
-                letter-spacing: 0.01em;
-                font-size: 0.75rem;
-            }
-
-            .calendar-grid {
-                display: grid;
-                grid-template-columns: repeat(7, 1fr);
-            }
-
-            .calendar-day {
-                min-height: 120px;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                position: relative;
-                overflow: hidden;
-                background: rgba(255, 255, 255, 0.95);
-                border: 1px solid rgba(226, 232, 240, 0.8);
-            }
-
-            .calendar-day::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(
-                    135deg,
-                    rgba(59, 130, 246, 0.05) 0%,
-                    rgba(59, 130, 246, 0.02) 100%
-                );
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                pointer-events: none;
-            }
-
-            .calendar-day:hover::before {
-                opacity: 1;
-            }
-
-            .calendar-day:hover {
-                transform: translateY(-1px) scale(1.01);
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                z-index: 10;
-            }
-
-            .event-tag {
                 font-size: 0.75rem;
                 padding: 4px 8px;
                 border-radius: 6px;
                 margin: 2px 0;
-                white-space: nowrap;
+                display: block;
+                width: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 transition: all 0.2s ease;
                 position: relative;
                 border: 1px solid rgba(255, 255, 255, 0.3);
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                word-wrap: break-word;
+                white-space: normal;
+                line-height: 1.2;
+                max-height: none;
             }
 
             .event-tag:hover {
@@ -261,7 +218,7 @@
 
             @media (max-width: 768px) {
                 .calendar-day {
-                    min-height: 80px;
+                    min-height: 120px;
                     padding: 8px !important;
                 }
 
@@ -269,6 +226,8 @@
                     font-size: 0.625rem;
                     padding: 2px 4px;
                     margin: 1px 0;
+                    display: block;
+                    width: 100%;
                 }
 
                 .container {
@@ -364,47 +323,27 @@
                 .h-3 {
                     height: 0.5rem !important;
                 }
+
+                .calendar-day .space-y-2 {
+                    max-height: 80px;
+                }
             }
 
             @media (max-width: 480px) {
                 .calendar-day {
-                    min-height: 70px;
+                    min-height: 100px;
                     padding: 6px !important;
                 }
 
                 .event-tag {
                     font-size: 0.5rem;
                     padding: 1px 3px;
+                    display: block;
+                    width: 100%;
                 }
 
-                .flex.justify-between {
-                    flex-direction: column;
-                    gap: 1rem;
-                    align-items: center;
-                }
-
-                .flex.items-center.space-x-6 {
-                    gap: 0.5rem !important;
-                }
-
-                h1 {
-                    font-size: 1.5rem !important;
-                }
-
-                .text-3xl {
-                    font-size: 1.25rem !important;
-                }
-
-                .p-8 {
-                    padding: 0.75rem !important;
-                }
-
-                .space-y-4 > * + * {
-                    margin-top: 0.75rem !important;
-                }
-
-                .space-y-3 > * + * {
-                    margin-top: 0.5rem !important;
+                .calendar-day .space-y-2 {
+                    max-height: 70px;
                 }
             }
 
@@ -420,6 +359,73 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+
+            .calendar-grid {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+            }
+
+            .calendar-day {
+                min-height: 150px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid rgba(226, 232, 240, 0.8);
+            }
+
+            .calendar-day::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.05) 0%,
+                    rgba(59, 130, 246, 0.02) 100%
+                );
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                pointer-events: none;
+            }
+
+            .calendar-day:hover::before {
+                opacity: 1;
+            }
+
+            .calendar-day:hover {
+                transform: translateY(-1px) scale(1.01);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                z-index: 10;
+            }
+
+            /* 이벤트 컨테이너 스크롤 추가 */
+            .calendar-day .space-y-2 {
+                max-height: 100px;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+            }
+
+            .calendar-day .space-y-2::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .calendar-day .space-y-2::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .calendar-day .space-y-2::-webkit-scrollbar-thumb {
+                background: rgba(156, 163, 175, 0.5);
+                border-radius: 2px;
+            }
+
+            .calendar-day .space-y-2::-webkit-scrollbar-thumb:hover {
+                background: rgba(156, 163, 175, 0.7);
             }
         </style>
     </head>
