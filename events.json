@@ -1,65 +1,52 @@
 {
   "events": [
      {
-      "date": "2025-06-01",
+      "date": "2025-07-02",
       "type": "company",
-      "title": "important",
-      "description": "true",
+      "title": "company",
+      "description": "company",
       "important": true
     },
     {
-      "date": "2025-06-27",
-      "type": "brighton",
-      "title": "테스트",
-      "description": "메신저 자동발송 테스트"
+      "date": "2025-07-02",
+      "type": "aptamil",
+      "title": "aptamil",
+      "description": "aptamil"
     },
     {
-      "date": "2025-06-30",
-      "type": "company",
-      "title": "테스트",
-      "description": "lorem"
+     "date": "2025-07-02",
+      "type": "dreame",
+      "title": "dreame",
+      "description": "dreame"
     }
     ,
     {
-      "date": "2025-07-01",
+   "date": "2025-07-02",
       "type": "brighton",
-      "title": "테스트",
-      "description": "lorem"
+      "title": "brighton",
+      "description": "brighton"
     }
     ,
     {
-      "date": "2025-07-01",
+     "date": "2025-07-02",
       "type": "customer",
-      "title": "테스트",
-      "description": "lorem"
+      "title": "customer",
+      "description": "customer"
     }
     ,
     {
-      "date": "2025-07-01",
+"date": "2025-07-02",
       "type": "marketing",
-      "title": "테스트마지막test",
-      "description": "lorem"
+      "title": "marketing",
+      "description": "marketing"
     }
     ,
     {
-      "date": "2025-07-01",
-      "type": "company",
-      "title": "일정추가",
-      "description": "일정추가 상세내용"
+    "date": "2025-07-02",
+      "type": "content",
+      "title": "content",
+      "description": "content"
     }
-    ,
-    {
-      "date": "2025-07-01",
-      "type": "company",
-      "title": "일정추가2",
-      "description": "일정추가 상세내용"
-    }
-    ,
-    {
-      "date": "2025-07-01",
-      "type": "company",
-      "title": "카카오톡",
-      "description": "5층 대회의실 사용 공지"
-    }
+   
   ]
 } 
