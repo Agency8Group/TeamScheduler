@@ -12,7 +12,7 @@
                         colors: {
                             company: "#EF4444", // 회사전체 - 빨간색
                             aptamil: "#3B82F6", // 압타밀 - 파란색
-                            dreamy: "#1F2937", // 드리미 - 검은색
+                            dreame: "#1F2937", // 드리미 - 검은색
                             brighton: "#F59E0B", // bt몰 - 노란색
                             customer: "#EC4899", // 고객센터 - 핑크색
                             marketing: "#06B6D4", // 마케팅 - 청록색
@@ -119,12 +119,24 @@
                 background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             }
 
-            .event-tag.bg-dreamy {
-                background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            .event-tag.bg-dreame {
+                background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             }
 
             .event-tag.bg-brighton {
                 background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            }
+
+            .event-tag.bg-customer {
+                background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            }
+
+            .event-tag.bg-marketing {
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            }
+
+            .event-tag.bg-content {
+                background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
             }
 
             .tooltip {
@@ -1050,6 +1062,24 @@
                                                           dot: "bg-yellow-500",
                                                           tag: "bg-yellow-100 text-yellow-800",
                                                       },
+                                                      customer: {
+                                                          bg: "bg-pink-50",
+                                                          border: "border-pink-200",
+                                                          dot: "bg-pink-500",
+                                                          tag: "bg-pink-100 text-pink-800",
+                                                      },
+                                                      marketing: {
+                                                          bg: "bg-cyan-50",
+                                                          border: "border-cyan-200",
+                                                          dot: "bg-cyan-500",
+                                                          tag: "bg-cyan-100 text-cyan-800",
+                                                      },
+                                                      content: {
+                                                          bg: "bg-lime-50",
+                                                          border: "border-lime-200",
+                                                          dot: "bg-lime-500",
+                                                          tag: "bg-lime-100 text-lime-800",
+                                                      },
                                                   };
                                                   const colors =
                                                       typeColors[event.type] ||
@@ -1370,13 +1400,13 @@
                 // 범례색상
                 getEventColor(type) {
                     const colors = {
-                        company: "#ef4444", // red
-                        aptamil: "#3b82f6", // blue
-                        dreame: "#1f2937", // gray-800 (드리미)
-                        brighton: "#eab308", // yellow
-                        customer: "#ec4899", // pink (고객센터)
-                        marketing: "#06b6d4", // cyan (마케팅)
-                        content: "#84cc16", // lime (컨텐츠)
+                        company: "#EF4444", // 회사전체 - 빨간색
+                        aptamil: "#3B82F6", // 압타밀 - 파란색
+                        dreame: "#1F2937", // 드리미 - 검은색
+                        brighton: "#F59E0B", // bt몰 - 노란색
+                        customer: "#EC4899", // 고객센터 - 핑크색
+                        marketing: "#06B6D4", // 마케팅 - 청록색
+                        content: "#84CC16", // 컨텐츠 - 연두색
                     };
                     return colors[type] || "#6b7280";
                 }
